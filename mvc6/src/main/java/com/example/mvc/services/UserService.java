@@ -47,8 +47,8 @@ public class UserService {
                 user.setActive(true);
                 log.info("Unban user with id = {}; email: {}", user.getId(), user.getEmail());
             }
-            userRepository.save(user);
         }
+        userRepository.save(user);
     }
 
     public void changeUserRoles(User user, Map<String, String> form) {
@@ -67,14 +67,11 @@ public class UserService {
 
     public User getUserByPrincipal(Principal principal) {
         if (principal == null) return new User();
-        var user = userRepository.findByEmail(principal.getName());
-        if (!user.isActive()) {
-            throw new RuntimeException("User is banned");
-        }
-        return user;
+        return userRepository.findByEmail(principal.getName());
     }
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
+
     }
 }
